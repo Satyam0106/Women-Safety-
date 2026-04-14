@@ -20,15 +20,34 @@ const MainDashboard = () => {
   }, [location]);
 
   useEffect(() => {
-    if (!navigator.geolocation) return;
+    if (!navigator.geolocation) {
+      setLoadingLocation(false);
+      return;
+    }
+
+    // Set a timeout to stop waiting for GPS after 8 seconds
+    const timeoutId = setTimeout(() => {
+      setLoadingLocation(false);
+    }, 8000);
+
     navigator.geolocation.getCurrentPosition(
       (pos) => {
+        clearTimeout(timeoutId);
         setLocation({ latitude: pos.coords.latitude, longitude: pos.coords.longitude });
         setLoadingLocation(false);
       },
-      () => setLoadingLocation(false),
-      { enableHighAccuracy: true }
+      () => {
+        clearTimeout(timeoutId);
+        setLoadingLocation(false);
+      },
+      { 
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 0
+      }
     );
+
+    return () => clearTimeout(timeoutId);
   }, []);
 
   useEffect(() => {

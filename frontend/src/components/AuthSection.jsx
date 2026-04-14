@@ -42,7 +42,7 @@ const AuthSection = () => {
     } catch (err) {
       setError(
         err.response?.data?.message ||
-          "Authentication failed. Make sure backend is running on port 5000."
+          "Authentication failed. Cannot connect to the secure server."
       );
     } finally {
       setLoading(false);
