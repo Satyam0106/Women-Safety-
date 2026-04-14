@@ -1175,6 +1175,29 @@ body {
   box-shadow: 0 0 15px rgba(37, 99, 235, 0.4);
 }
 
+.stop-tracking-btn {
+  background: rgba(244, 63, 94, 0.1) !important;
+  border: 1px solid rgba(244, 63, 94, 0.2) !important;
+  color: #fb7185 !important;
+  padding: 0.6rem 1.2rem;
+  border-radius: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.stop-tracking-btn:hover:not(:disabled) {
+  background: rgba(244, 63, 94, 0.2) !important;
+  transform: translateY(-1px);
+}
+
+.topbar-actions button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  filter: grayscale(0.5);
+  transform: none !important;
+}
+
 .sos-stats-overlay {
   position: absolute;
   top: 1.5rem;

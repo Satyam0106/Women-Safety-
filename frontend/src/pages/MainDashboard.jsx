@@ -76,13 +76,17 @@ const MainDashboard = () => {
     }
   }, []);
 
-  const handleAlertToggle = () => {
+  const handleStartAlert = () => {
     if (!isAlertActive) {
       resetTracking();
       setIsAlertActive(true);
-    } else {
-      setIsAlertActive(false);
     }
+  };
+
+  const handleStopTracking = () => {
+    setIsAlertActive(false);
+    setIsSosActive(false);
+    // useSafetyTracking will automatically clear watchers when its dependency (active) becomes false
   };
 
   const triggerSOS = async (contact) => {
@@ -149,10 +153,20 @@ const MainDashboard = () => {
         <div className="topbar-actions">
           <button 
             className={`alert-toggle-btn ${isAlertActive ? 'active' : ''}`}
-            onClick={handleAlertToggle}
+            onClick={handleStartAlert}
+            disabled={isAlertActive || isSosActive}
           >
-            {isAlertActive ? "Stop Tracking" : "Start Alert"}
+            Start Alert
           </button>
+          
+          <button 
+            className="stop-tracking-btn"
+            onClick={handleStopTracking}
+            disabled={!(isAlertActive || isSosActive)}
+          >
+            Stop Tracking
+          </button>
+
           <button className="logout-btn" onClick={logout}>Logout</button>
         </div>
       </header>
