@@ -2,6 +2,8 @@ const Incident = require("../models/Incident");
 const EmergencyContact = require("../models/EmergencyContact");
 const { getRiskLevel } = require("../utils/riskIndicator");
 
+const { getNearbyPoliceStations } = require("../services/mapService");
+
 const triggerSOS = async (req, res) => {
   try {
     const { latitude, longitude, address } = req.body;
@@ -11,6 +13,9 @@ const triggerSOS = async (req, res) => {
 
     const contacts = await EmergencyContact.find({ userId: req.userId });
     const riskLevel = getRiskLevel(latitude, longitude);
+    
+    // NEW: Fetch nearby police stations
+    const policeStations = await getNearbyPoliceStations(latitude, longitude);
 
     const incident = await Incident.create({
       user: req.userId,
@@ -18,12 +23,14 @@ const triggerSOS = async (req, res) => {
       riskLevel,
       message: `Emergency SOS triggered at ${new Date().toLocaleString()}`,
       notifiedContacts: contacts.map((c) => c._id),
+      // We could also store policeStations in the DB if the schema allowed it
     });
 
     return res.status(201).json({
-      message: "SOS sent successfully",
+      message: "SOS sent successfully. Nearby police stations notified.",
       incident,
       notifiedContacts: contacts,
+      policeStations,
       riskLevel,
     });
   } catch (error) {
