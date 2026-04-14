@@ -120,9 +120,10 @@ const ProfilePage = () => {
             <button type="submit">Add Contact</button>
           </form>
           {profile.emergencyContacts.map((contact) => (
-            <p key={contact._id}>
-              {contact.contactName} - {contact.phoneNumber}
-            </p>
+            <div key={contact._id} className="contact-card">
+              <strong>{contact.contactName}</strong>
+              <span>{contact.phoneNumber}</span>
+            </div>
           ))}
         </section>
 
@@ -151,9 +152,10 @@ const ProfilePage = () => {
             <button type="submit">Add Member</button>
           </form>
           {profile.trustedCircle.map((member) => (
-            <p key={member._id}>
-              {member.memberName} ({member.relationship || "Trusted"}) - {member.phoneNumber}
-            </p>
+            <div key={member._id} className="contact-card">
+              <strong>{member.memberName} ({member.relationship || "Trusted"})</strong>
+              <span>{member.phoneNumber}</span>
+            </div>
           ))}
         </section>
       </main>
